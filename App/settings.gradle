@@ -1,0 +1,2 @@
+rootProject.name = "EVT-Tracking-System"
+include ':app'
