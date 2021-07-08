@@ -50,8 +50,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
          *
          */
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
 
-        if(true/*Constants.isLocationAvailable(this)*/){
+        if(Constants.isLocationAvailable(this)){
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location ->
                     if (location != null) {
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
         }else{
-            //Constants.isLocationAvailable(this)
+            Constants.isLocationAvailable(this)
         }
 
     }
