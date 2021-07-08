@@ -70,19 +70,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (location != null) {
                         lat = location.latitude
                         long = location.longitude
-<<<<<<< Updated upstream:App/app/src/main/java/tyyy/cardoso/evt_tracking_system/MainActivity.kt
-                        val cardoso = LatLng(lat, long)
-                        var zoomLevel = 16.0f
-                        mMap.addMarker(MarkerOptions().position(cardoso).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this, R.drawable.ic_baseline_directions_bus_24)))
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cardoso,zoomLevel))
-=======
+                        
                         val currentLocation = LatLng(lat, long)
                         var zoomLevel = 18.0f
                         mMap.addMarker(MarkerOptions().position(currentLocation).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this,
                             R.drawable.ic_baseline_person_outline_24
                         )))
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,zoomLevel))
->>>>>>> Stashed changes:App/app/src/main/java/tyyy/cardoso/evt_tracking_system/activities/MainActivity.kt
                     }
                 }
         }else{
