@@ -1,4 +1,4 @@
-package tyyy.cardoso.evt_tracking_system
+package tyyy.cardoso.evt_tracking_system.constants
 
 import android.Manifest
 import android.app.Activity

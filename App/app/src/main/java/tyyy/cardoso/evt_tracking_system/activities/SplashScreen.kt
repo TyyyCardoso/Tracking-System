@@ -1,9 +1,10 @@
-package tyyy.cardoso.evt_tracking_system
+package tyyy.cardoso.evt_tracking_system.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import tyyy.cardoso.evt_tracking_system.R
 
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

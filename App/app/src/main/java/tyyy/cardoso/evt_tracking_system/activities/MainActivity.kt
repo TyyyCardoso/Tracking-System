@@ -1,4 +1,4 @@
-package tyyy.cardoso.evt_tracking_system
+package tyyy.cardoso.evt_tracking_system.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,6 +19,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import tyyy.cardoso.evt_tracking_system.R
+import tyyy.cardoso.evt_tracking_system.constants.Constants
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -72,7 +74,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         long = location.longitude
                         val cardoso = LatLng(lat, long)
                         var zoomLevel = 16.0f
-                        mMap.addMarker(MarkerOptions().position(cardoso).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this, R.drawable.ic_baseline_directions_bus_24)))
+                        mMap.addMarker(MarkerOptions().position(cardoso).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this,
+                            R.drawable.ic_baseline_directions_bus_24
+                        )))
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cardoso,zoomLevel))
                     }
                 }

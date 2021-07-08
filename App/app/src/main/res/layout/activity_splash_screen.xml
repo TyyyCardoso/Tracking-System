@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:background="#BFD0E0"
     android:gravity="center"
-    tools:context=".SplashScreen">
+    tools:context=".activities.SplashScreen">
 
     <!-- Needs to change the image for the logo -->
     <ImageView
