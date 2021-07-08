@@ -4,9 +4,9 @@ data class TrackedEntitiesModel(
     val tentity: List<TrackedEntity>
 ) {
     data class TrackedEntity(
-        val ID: String,
+        val id: Int,
         val name: String,
         val description: String,
-        val gpsid: String
+        val gpsid: Int
     )
 }

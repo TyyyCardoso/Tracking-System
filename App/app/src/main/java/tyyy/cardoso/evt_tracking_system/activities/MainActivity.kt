@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var busList : BusModel? = null
     private var trackedEntitiesList : TrackedEntitiesModel? = null
+    private val latList = arrayListOf<Double>()
+    private val longList = arrayListOf<Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +118,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 // Check the response is success or not.
                 if (response!!.isSuccessful) {
                     busList = response.body()
+                    addMarkers(busList)
                     Log.i("Bus1", "$busList")
                 }
             }
@@ -176,7 +179,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         })
     }
 
-
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -190,7 +192,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         long = location.longitude
 
                         val currentLocation = LatLng(lat, long)
-                        var zoomLevel = 18.0f
+                        var zoomLevel = 15.0f
                         mMap.addMarker(MarkerOptions().position(currentLocation).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this,
                             R.drawable.ic_baseline_person_outline_24
                         )))
@@ -208,6 +210,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
             draw(Canvas(bitmap))
             BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
+    }
+
+    private fun addMarkers(coordinatesList : BusModel?){
+
+        for(item in coordinatesList!!.gps){
+            latList!!.add(item.lat)
+            longList!!.add(item.long)
+        }
+
+        for(i in 0 until latList!!.size){
+            val busLocation = LatLng(latList!![i], longList!![i])
+            mMap.addMarker(MarkerOptions().position(busLocation).title(coordinatesList!!.gps[i].name).icon(bitmapDescriptorFromVector(this,
+                R.drawable.ic_baseline_directions_bus_24
+            )))
         }
     }
 

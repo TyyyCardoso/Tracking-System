@@ -4,9 +4,9 @@ data class BusModel(
     val gps: List<Bus>
 ) {
     data class Bus(
-        val id: String,
-        val lat: String,
-        val long: String,
+        val id: Int,
+        val lat: Double,
+        val long: Double,
         val name: String,
         val status: String
     )
