@@ -50,9 +50,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
          *
          */
 
-        //val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 
-        //mapFragment.getMapAsync(this)
+        mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                         long = location.longitude
                         val cardoso = LatLng(lat, long)
                         var zoomLevel = 16.0f
-                        //mMap.addMarker(MarkerOptions().position(cardoso).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this, R.drawable.ic_baseline_directions_bus_24)))
+                        mMap.addMarker(MarkerOptions().position(cardoso).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this, R.drawable.ic_baseline_directions_bus_24)))
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cardoso,zoomLevel))
                     }
                 }
