@@ -72,18 +72,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (location != null) {
                         lat = location.latitude
                         long = location.longitude
-                        val cardoso = LatLng(lat, long)
-                        var zoomLevel = 16.0f
-                        mMap.addMarker(MarkerOptions().position(cardoso).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this,
-                            R.drawable.ic_baseline_directions_bus_24
+
+                        val currentLocation = LatLng(lat, long)
+                        var zoomLevel = 18.0f
+                        mMap.addMarker(MarkerOptions().position(currentLocation).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this,
+                            R.drawable.ic_baseline_person_outline_24
                         )))
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cardoso,zoomLevel))
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,zoomLevel))
                     }
                 }
         }else{
             Constants.isLocationAvailable(this)
         }
-
     }
 
     private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
