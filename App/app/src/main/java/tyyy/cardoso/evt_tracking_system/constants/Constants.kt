@@ -26,6 +26,8 @@ import java.security.AccessController.checkPermission
 object Constants {
 
 
+    const val BASE_URL: String = "https://pizzariaita1.com/api/"
+
     /**
      *
      * Check if has internet

@@ -5,9 +5,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -19,8 +20,19 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.GsonBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import tyyy.cardoso.evt_tracking_system.R
 import tyyy.cardoso.evt_tracking_system.constants.Constants
+import tyyy.cardoso.evt_tracking_system.models.BusModel
+import tyyy.cardoso.evt_tracking_system.models.TrackedEntitiesModel
+import tyyy.cardoso.evt_tracking_system.network.BusSearchService
+import tyyy.cardoso.evt_tracking_system.network.TrackedEntitiesService
+
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -28,6 +40,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var lat : Double = 0.0
     private var long : Double = 0.0
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private var busList : BusModel? = null
+    private var trackedEntitiesList : TrackedEntitiesModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +74,108 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        getBusSearch()
+        getTrackedEntitiesSearch()
     }
+
+    private fun getBusSearch() {
+        /**
+         * Add the built-in converter factory first. This prevents overriding its
+         * behavior but also ensures correct behavior when using converters that consume all types.
+         */
+        val retrofit: Retrofit = Retrofit.Builder()
+            // API base URL.
+            .baseUrl(Constants.BASE_URL)
+            /** Add converter factory for serialization and deserialization of objects. */
+            /**
+             * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
+             * decoding from JSON (when no charset is specified by a header) will use UTF-8.
+             */
+            .addConverterFactory(GsonConverterFactory.create())
+            /** Create the Retrofit instances. */
+            .build()
+
+        /**
+         * Here we map the service interface in which we declares the end point and the API type
+         *i.e GET, POST and so on along with the request parameter which are required.
+         */
+        val service: BusSearchService =
+            retrofit.create<BusSearchService>(BusSearchService::class.java)
+
+        /** An invocation of a Retrofit method that sends a request to a web-server and returns a response.
+         * Here we pass the required param in the service
+         */
+        val listCall: Call<BusModel> = service.getInfo()
+
+        // Callback methods are executed using the Retrofit callback executor.
+        listCall.enqueue(object : Callback<BusModel> {
+            override fun onResponse(
+                call: Call<BusModel>,
+                response: Response<BusModel>
+            ) {
+                // Check the response is success or not.
+                if (response!!.isSuccessful) {
+                    busList = response.body()
+                    Log.i("Bus1", "$busList")
+                }
+            }
+
+            override fun onFailure(call: Call<BusModel>, t: Throwable) {
+                Log.i("Errrrror", "$t")
+            }
+
+        })
+    }
+
+    private fun getTrackedEntitiesSearch() {
+        /**
+         * Add the built-in converter factory first. This prevents overriding its
+         * behavior but also ensures correct behavior when using converters that consume all types.
+         */
+        val retrofit: Retrofit = Retrofit.Builder()
+            // API base URL.
+            .baseUrl(Constants.BASE_URL)
+            /** Add converter factory for serialization and deserialization of objects. */
+            /**
+             * Create an instance using a default {@link Gson} instance for conversion. Encoding to JSON and
+             * decoding from JSON (when no charset is specified by a header) will use UTF-8.
+             */
+            .addConverterFactory(GsonConverterFactory.create())
+            /** Create the Retrofit instances. */
+            .build()
+
+        /**
+         * Here we map the service interface in which we declares the end point and the API type
+         *i.e GET, POST and so on along with the request parameter which are required.
+         */
+        val service: TrackedEntitiesService =
+            retrofit.create<TrackedEntitiesService>(TrackedEntitiesService::class.java)
+
+        /** An invocation of a Retrofit method that sends a request to a web-server and returns a response.
+         * Here we pass the required param in the service
+         */
+        val listCall: Call<TrackedEntitiesModel> = service.getInfo()
+
+        // Callback methods are executed using the Retrofit callback executor.
+        listCall.enqueue(object : Callback<TrackedEntitiesModel> {
+            override fun onResponse(
+                call: Call<TrackedEntitiesModel>,
+                response: Response<TrackedEntitiesModel>
+            ) {
+                // Check the response is success or not.
+                if (response!!.isSuccessful) {
+                    trackedEntitiesList = response.body()
+                    Log.i("Bus1", "$trackedEntitiesList")
+                }
+            }
+
+            override fun onFailure(call: Call<TrackedEntitiesModel>, t: Throwable) {
+                Log.i("Errrrror", "$t")
+            }
+
+        })
+    }
+
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
