@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">EVT-Tracking-System</string>
+    <string name="app_name">EVTts</string>
     <string name="title_activity_maps">Map</string>
 </resources>
