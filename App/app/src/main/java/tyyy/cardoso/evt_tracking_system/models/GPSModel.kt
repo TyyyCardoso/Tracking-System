@@ -1,6 +1,6 @@
 package tyyy.cardoso.evt_tracking_system.models
 
-data class BusModel(
+data class GPSModel(
     val gps: List<Bus>
 ) {
     data class Bus(
