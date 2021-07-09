@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import tyyy.cardoso.evt_tracking_system.R
 
 class SplashScreen : AppCompatActivity() {
@@ -14,7 +15,7 @@ class SplashScreen : AppCompatActivity() {
         /**
          * Uses Handler for making a delay before switching between activities
          */
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()

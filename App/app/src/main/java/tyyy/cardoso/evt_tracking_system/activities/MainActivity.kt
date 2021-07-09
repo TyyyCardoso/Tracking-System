@@ -2,10 +2,13 @@ package tyyy.cardoso.evt_tracking_system.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -43,8 +46,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var busList : BusModel? = null
     private var trackedEntitiesList : TrackedEntitiesModel? = null
+
     private val latList = arrayListOf<Double>()
     private val longList = arrayListOf<Double>()
+    private val busTitles = arrayListOf<String>()
+    private val busID = arrayListOf<Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +83,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         getBusSearch()
-        getTrackedEntitiesSearch()
     }
 
     private fun getBusSearch() {
@@ -107,7 +112,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         /** An invocation of a Retrofit method that sends a request to a web-server and returns a response.
          * Here we pass the required param in the service
          */
-        val listCall: Call<BusModel> = service.getInfo()
+        val listCall: Call<BusModel> = service.getInfo("on")
 
         // Callback methods are executed using the Retrofit callback executor.
         listCall.enqueue(object : Callback<BusModel> {
@@ -118,7 +123,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 // Check the response is success or not.
                 if (response!!.isSuccessful) {
                     busList = response.body()
-                    addMarkers(busList)
+                    getTrackedEntitiesSearch()
                     Log.i("Bus1", "$busList")
                 }
             }
@@ -157,26 +162,38 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         /** An invocation of a Retrofit method that sends a request to a web-server and returns a response.
          * Here we pass the required param in the service
          */
-        val listCall: Call<TrackedEntitiesModel> = service.getInfo()
+        for(item in busList!!.gps) {
+                //Log.i("id", "${item.id}")
+                val listCall: Call<TrackedEntitiesModel> = service.getInfo(item.id)
 
-        // Callback methods are executed using the Retrofit callback executor.
-        listCall.enqueue(object : Callback<TrackedEntitiesModel> {
-            override fun onResponse(
-                call: Call<TrackedEntitiesModel>,
-                response: Response<TrackedEntitiesModel>
-            ) {
-                // Check the response is success or not.
-                if (response!!.isSuccessful) {
-                    trackedEntitiesList = response.body()
-                    Log.i("Bus1", "$trackedEntitiesList")
-                }
-            }
+                // Callback methods are executed using the Retrofit callback executor.
+                listCall.enqueue(object : Callback<TrackedEntitiesModel> {
+                    override fun onResponse(
+                        call: Call<TrackedEntitiesModel>,
+                        response: Response<TrackedEntitiesModel>
+                    ) {
+                        // Check the response is success or not.
+                        if (response!!.isSuccessful) {
+                            trackedEntitiesList = response.body()
+                            busTitles.add(trackedEntitiesList!!.name)
+                            busID.add(trackedEntitiesList!!.gpsid)
+                            Log.i("Bus1", "$trackedEntitiesList")
+                            Log.i("name", "${trackedEntitiesList!!.name}")
+                            Log.i("SIZE1", "${busTitles.size}")
 
-            override fun onFailure(call: Call<TrackedEntitiesModel>, t: Throwable) {
-                Log.i("Errrrror", "$t")
-            }
+                        }
+                    }
 
-        })
+                    override fun onFailure(call: Call<TrackedEntitiesModel>, t: Throwable) {
+                        Log.i("Errrrror", "$t")
+                    }
+
+                })
+       }
+        Handler(Looper.getMainLooper()).postDelayed({
+            addMarkers(busTitles)
+        }, 1000)
+
     }
 
     @SuppressLint("MissingPermission")
@@ -193,7 +210,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         val currentLocation = LatLng(lat, long)
                         var zoomLevel = 15.0f
-                        mMap.addMarker(MarkerOptions().position(currentLocation).title("Marker in CARDOSO").icon(bitmapDescriptorFromVector(this,
+                        mMap.addMarker(MarkerOptions().position(currentLocation).title("You").icon(bitmapDescriptorFromVector(this,
                             R.drawable.ic_baseline_person_outline_24
                         )))
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,zoomLevel))
@@ -213,16 +230,29 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun addMarkers(coordinatesList : BusModel?){
+    private fun addMarkers(titles : ArrayList<String>){
 
-        for(item in coordinatesList!!.gps){
-            latList!!.add(item.lat)
-            longList!!.add(item.long)
+        //Log.i("GPS1ID", "${busList!!.gps[1].id}")
+
+        for(i in 0 until busID.size){
+            for(j in 0 until busList!!.gps.size){
+                //Log.i("ORANGO[I]", "${busID[i]}")
+                //Log.i("ORANGO[j]", "${busList!!.gps[j].id}")
+                if(busID[i]==busList!!.gps[j].id){
+                    latList!!.add(busList!!.gps[j].lat)
+                    longList!!.add(busList!!.gps[j].long)
+                    break
+                }
+                //Log.i("GPS1ID", "${busList!!.gps[i].id}")
+                //Log.i("BUS1ID", "${busID[i]}")
+            }
+
         }
+
 
         for(i in 0 until latList!!.size){
             val busLocation = LatLng(latList!![i], longList!![i])
-            mMap.addMarker(MarkerOptions().position(busLocation).title(coordinatesList!!.gps[i].name).icon(bitmapDescriptorFromVector(this,
+            mMap.addMarker(MarkerOptions().position(busLocation).title(busTitles[i]).icon(bitmapDescriptorFromVector(this,
                 R.drawable.ic_baseline_directions_bus_24
             )))
         }
