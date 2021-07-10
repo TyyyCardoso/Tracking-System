@@ -4,9 +4,9 @@ data class StopsModel(
     val stops: List<Stop>
 ) {
     data class Stop(
-        val id: String,
-        val lat: String,
-        val long: String,
+        val id: Int,
+        val lat: Double,
+        val long: Double,
         val name: String
     )
 }

@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             })
         }
         Handler(Looper.getMainLooper()).postDelayed({
-            addMarkers(busTitles)
+            addMarkers()
         }, 1000)
 
     }
@@ -356,7 +356,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun addMarkers(titles: ArrayList<String>) {
+    private fun addMarkers() {
 
         //Log.i("GPS1ID", "${busList!!.gps[1].id}")
 
@@ -375,6 +375,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
+        for (item in stopsList!!.stops) {
+            val stopLocation = LatLng(item.lat, item.long)
+            mMap.addMarker(
+                MarkerOptions().position(stopLocation).title(item.name).icon(
+                    bitmapDescriptorFromVector(
+                        this,
+                        R.drawable.ic_baseline_stop_circle_24
+                    )
+                )
+            )
+        }
+
 
         for (i in 0 until latList!!.size) {
             val busLocation = LatLng(latList!![i], longList!![i])
@@ -386,17 +398,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
                 )
             )
-
-            mMap.setOnMarkerClickListener { marker ->
-                val title = marker.title // Retrieve the title
-                busNameTV.setText("Nome: ${title}")
-                val desc = marker.snippet
-
-                busDescTV.setText("Desc: ${desc}")
-                true
-            }
-
         }
+
+        mMap.setOnMarkerClickListener { marker ->
+            val title = marker.title // Retrieve the title
+            busNameTV.setText("Nome: ${title}")
+            val desc = marker.snippet
+
+            busDescTV.setText("Desc: ${desc}")
+            true
+        }
+
+
+
     }
 
 }
