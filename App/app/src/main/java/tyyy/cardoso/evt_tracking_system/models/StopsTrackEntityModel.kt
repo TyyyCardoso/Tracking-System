@@ -4,8 +4,8 @@ data class StopsTrackEntityModel(
     val stopstentity: List<Stop>
 ) {
     data class Stop(
-        val sid: String,
-        val teid: String,
+        val sid: Int,
+        val teid: Int,
         val timearrival: String
     )
 }

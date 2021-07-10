@@ -20,4 +20,11 @@
         android:text="Descrição: "
         />
 
+    <TextView
+        android:id="@+id/stopsDescTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stops: "
+        />
+
 </LinearLayout>
