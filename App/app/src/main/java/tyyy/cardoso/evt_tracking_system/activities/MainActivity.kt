@@ -2,7 +2,6 @@ package tyyy.cardoso.evt_tracking_system.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.Build
@@ -23,7 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.bus_info.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -395,7 +394,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 MarkerOptions().position(busLocation).title(busTitles[i]).snippet(busDescription[i]).icon(
                     bitmapDescriptorFromVector(
                         this,
-                        R.drawable.ic_bus
+                        R.drawable.ic_baseline_directions_bus_24
                     )
                 )
             )
@@ -405,6 +404,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val title = marker.title // Retrieve the title
             busNameTV.setText("Nome: ${title}")
             val desc = marker.snippet
+
             busDescTV.setText("Desc: ${desc}")
             true
         }
