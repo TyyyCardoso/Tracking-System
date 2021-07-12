@@ -14,9 +14,9 @@
 
     <!-- Needs to change the image for the logo -->
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/bus"
         android:layout_gravity="center" />
     
 </LinearLayout>
