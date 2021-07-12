@@ -394,7 +394,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 MarkerOptions().position(busLocation).title(busTitles[i]).snippet(busDescription[i]).icon(
                     bitmapDescriptorFromVector(
                         this,
-                        R.drawable.ic_baseline_directions_bus_24
+                        R.drawable.ic_bus
                     )
                 )
             )
